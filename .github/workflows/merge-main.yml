@@ -1,7 +1,8 @@
 name: PRs to main
-on: 
-  pull_request:
-    branches: [main]
+on:
+  push:
+    branches:
+      - main
 
 jobs:
   merge-main-staging:
