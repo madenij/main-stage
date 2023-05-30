@@ -1,51 +1,23 @@
-name: Merge main into staging
-
-on:
-  push:
-    branches:
-      - main
+name: PRs to main
+on: 
+  pull_request:
+    branches: [main]
 
 jobs:
-  merge:
+  merge-main-staging:
+    if: github.event.pull_request.merged == true
+    timeout-minutes: 2
     runs-on: ubuntu-latest
-
     steps:
-      - name: Check out repository
-        uses: actions/checkout@v2
-
-      - name: Create staging branch
-        run: |
-          git config --global 
-          git config --global user.email "actions@github.com"
-          git fetch origin staging
+    - uses: actions/checkout@v2
+    - name: Set Git config
+      run: |
+          git config --local user.email "actions@github.com"
+          git config --local user.name "Github Actions"
+    - name: Merge main into staging
+      run: |
+          git fetch origin staging --unshallow
+          git checkout staging
           git pull origin staging
-          git config pull.rebase false 
-          git config pull.rebase true  
-          git config pull.ff only                
-
-      - name: Merge main into staging
-        run: |
-          git merge main || (git merge --abort && git reset --hard origin/staging && exit 1)
-          git push origin staging || (git reset --hard origin/staging && exit 1)
-
-      - name: Send status message
-        if: ${{ success() }}
-        run: |
-          echo "Changes from main branch have been successfully merged into staging branch."
-
-      - name: Log merge details
-        if: ${{ success() }}
-        run: |
-          echo "Merged changes from main branch to staging branch."
-          git log --oneline -n 5 --no-decorate
-
-      - name: Send failure message
-        if: ${{ failure() }}
-        run: |
-          echo "Failed to merge changes from main branch to staging branch. Please review and resolve any conflicts."
-
-      - name: Rollback changes on failure
-        if: ${{ failure() }}
-        run: |
-          git reset --hard origin/staging
-          git clean -ffdx
+          git merge --no-ff main -m "Auto-merge main into staging"
+          git push origin staging
