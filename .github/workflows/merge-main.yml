@@ -21,6 +21,9 @@ jobs:
         run: |
           git fetch origin staging --unshallow
           git checkout staging
-          git pull origin staging
+          git pull origin staging --ff-only
           git merge --no-ff main -m "Auto-merge main into staging"
           git push origin staging
+
+
+         
