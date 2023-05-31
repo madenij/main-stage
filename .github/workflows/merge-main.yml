@@ -19,7 +19,7 @@ jobs:
 
       - name: Merge main into staging
         run: |
-          git fetch origin staging
+          git fetch origin staging --unshallow
           git checkout staging
           git pull origin staging
           git merge --no-ff main -m "Auto-merge main into staging"
