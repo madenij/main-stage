@@ -22,24 +22,12 @@ jobs:
           git fetch origin staging --unshallow
           git checkout staging
           git pull origin staging
-          git merge --no-ff main -m "Auto-merge main into staging"
-          git push origin staging
-
-      - name: Send status message
-        if: ${{ success() }}
-        run: |
-          echo "Changes from main branch have been successfully merged into staging branch."
-  
-      - name: Log merge details
-        if: ${{ success() }}
-        run: |
-          echo "Merged changes from main branch to staging branch."
-          git log --oneline -n 5 --no-decorate
-
-      - name: Send failure message
-        if: ${{ failure() }}
-        run: |
-          echo "Failed to merge changes from main branch to staging branch. Please review and resolve any conflicts."
+          if git merge --no-ff main -m "Auto-merge main into staging"; then
+            git push origin staging
+            echo "successfull merged"
+          else
+            echo "Failed to merged changes"
+          fi          
 
       - name: Rollback changes on failure
         if: ${{ failure() }}
