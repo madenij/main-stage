@@ -1,3 +1,5 @@
 SELECT *
 FROM page
 WHERE total IS NULL
+
+ORDER BY 1 DESC
