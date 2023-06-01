@@ -1,5 +1,6 @@
+This file is for checking manipulation
 SELECT *
-FROM page
+FROM user
 WHERE total IS NULL
+ORDER BY 1,2,3
 
-ORDER BY 1 DESC
