@@ -1,7 +1,7 @@
 create table user as(
-    id
-    number
-    tel
+    id int
+    number int
+    tel int
 ),
 
 SELECT *
