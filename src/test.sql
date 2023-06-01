@@ -1,0 +1,3 @@
+SELECT *
+FROM page
+WHERE total IS NULL
