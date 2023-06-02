@@ -27,13 +27,7 @@ jobs:
             echo "successfull merged"
           else
             echo "Failed to merged changes"
-          fi          
-
-      - name: Rollback changes on failure
-        if: ${{ failure() }}
-        run: |
-          git reset --hard origin/staging
-          git clean -ffdx
+          fi         
   
 
           
